@@ -6,12 +6,44 @@
 #include<sys/ioctl.h>
 #include <unistd.h>
 
-void get_terminal_size(int *width, int *height)
+// void get_terminal_size(int *width, int *height)
+// {
+//     struct winsize w;
+//     ioctl(STDOUT_FILENO, TIOCGWINSZ, &w);
+//     width = (int*)w.ws_col;
+//     height = (int*)w.ws_row;
+// }
+
+// todo: set terminal to 90 chars width
+
+void draw_separator()
 {
-    struct winsize w;
-    ioctl(STDOUT_FILENO, TIOCGWINSZ, &w);
-    width = (int*)w.ws_col;
-    height = (int*)w.ws_row;
+    int width, height;
+   // get_terminal_size(&width, &height); // fixme
+    for(int i = 0; i < 90; i++)
+    {
+        std::cout << "*";
+    }
+    std::cout << std::endl;
+}
+
+void draw_header()
+{
+    std::cout << R"(
+  ___            _                       _____                                 _     
+ / _ \          | |                     /  __ \                               | |    
+/ /_\ \_ __   __| |_ __ _____      _____| /  \/ ___  _   _ _ __ ___  __ _  ___| |__  
+|  _  | '_ \ / _` | '__/ _ \ \ /\ / / __| |    / _ \| | | | '__/ __|/ _` |/ __| '_ \ 
+| | | | | | | (_| | | |  __/\ V  V /\__ \ \__/\ (_) | |_| | |  \__ \ (_| | (__| | | |
+\_| |_/_| |_|\__,_|_|  \___| \_/\_/ |___/\____/\___/ \__,_|_|  |___/\__,_|\___|_| |_|
+                                                                                     
+                                                                                     		
+)" << '\n';
+}
+
+void SubMenu::add_item(Menu* item)
+{
+    this->items.push_back(item);
 }
 
 std::string Menu::getTitle()
@@ -19,20 +51,26 @@ std::string Menu::getTitle()
     return this->title;
 }
 
-void draw_separator()
+void SubMenu::print_menu()
 {
-    int width, height;
-    get_terminal_size(&width, &height); // fixme
-    for(int i = 0; i < 64; i++)
+    for(size_t i = 0; i < this->items.size(); i++)
     {
-        std::cout << "*";
+        std::cout << this->items[i]->getTitle() << std::endl;
     }
-    std::cout << std::endl;
 }
 
 void SubMenu::run()
 {
-    system("clear");
+    system("clear"); //todo: replace with system.h constants.
     draw_separator();
-    
+    draw_header();
+    draw_separator();
+    print_menu();
+}
+
+void MenuItem::run()
+{
+    // call action
+    std::cout << "placeholder" << std::endl;
+    return;
 }

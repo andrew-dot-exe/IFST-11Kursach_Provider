@@ -7,7 +7,12 @@
 #include "handlers.cpp"
 int main()
 {
-    draw_separator();
-    std::cout << "hello world" << std::endl;
+    SubMenu *mainMenu;
+    mainMenu = new SubMenu("Main");
+    mainMenu->add_item(new MenuItem("sample"));
+    mainMenu->add_item(new MenuItem("sample"));
+    mainMenu->add_item(new MenuItem("sample"));
+    mainMenu->add_item(new MenuItem("sample"));
+    mainMenu->run();
     return 0; 
 }
