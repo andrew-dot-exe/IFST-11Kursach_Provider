@@ -20,6 +20,7 @@ private:
     std::string documentInfo; //информация о документе
 
 public:
+    Document(int document_id, std::string info);
     int getDocumentID();
-    std::string getDocumentInfo;
+    std::string getDocumentInfo();
 };

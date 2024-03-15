@@ -1,16 +1,39 @@
-#include "entities.h"
+/*
+    Прототип классов меню.
+    (c) andrew_dot_exe, 2024.
+*/
+#pragma once
+#include<vector>
+#include<string>
+#include<iostream>
+#include<functional>
 
-class InputHandler
+class Menu
 {
-    public:
-        static Client addNewClient();
-        static Document addNewDocument();
+private:
+    std::string title;
+public:
+    Menu(std::string title) : title(title){}
+    std::string getTitle();
+    virtual void run() = 0;
 };
 
-class MainHandler
+class SubMenu : public Menu
 {
-    public:
-        MainHandler();
-        MainHandler(std::string basePath);
-        
+private:
+    std::vector<Menu*> items;
+
+public:
+   // SubMenu(std::string title) : title(title){}
+    void add_item(Menu* item);
+    void run() override;
+
+};
+
+class MenuItem : public Menu
+{
+public:
+	void run() override;
+private:
+	std::function<void()> action; // нужны флаги компиляции -std=c++11 -stdlib=libc++
 };
