@@ -1,19 +1,6 @@
 #include "handlers.h"
 #include"system.h"
 
-//TODO: https://stackoverflow.com/questions/23369503/get-size-of-terminal-window-rows-columns
-//using only linux/macOS method
-#include<sys/ioctl.h>
-#include <unistd.h>
-
-// void get_terminal_size(int *width, int *height)
-// {
-//     struct winsize w;
-//     ioctl(STDOUT_FILENO, TIOCGWINSZ, &w);
-//     width = (int*)w.ws_col;
-//     height = (int*)w.ws_row;
-// }
-
 // todo: set terminal to 90 chars width
 
 void draw_separator()
