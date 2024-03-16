@@ -8,11 +8,15 @@
 int main()
 {
     SubMenu *mainMenu;
+    SubMenu *childMenu;
+
     mainMenu = new SubMenu("Main");
-    mainMenu->add_item(new MenuItem("sample"));
-    mainMenu->add_item(new MenuItem("sample"));
-    mainMenu->add_item(new MenuItem("sample"));
-    mainMenu->add_item(new MenuItem("sample"));
+    childMenu = new SubMenu("Child", "Parent Header");
+
+    childMenu->add_item(new MenuItem("sample from parent"));
+
+    mainMenu->add_item(new MenuItem("sample parent"));
+    mainMenu->add_item(childMenu);
     mainMenu->run();
     return 0; 
 }
