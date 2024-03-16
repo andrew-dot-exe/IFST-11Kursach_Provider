@@ -23,15 +23,20 @@ public:
 class SubMenu : public Menu
 {
 private:
+    int entryCount = 0; // счетчик экранов
+    const int maxEntryCount = 2; // максимум экранов
+    std::string header; // заголовок меню
     std::vector<Menu*> items;
+    void executeFunction(int choice);
 
 public:
     virtual ~SubMenu(){};
-    SubMenu(std::string title): Menu(title) { this->title = title;}
+    SubMenu(std::string title, std::string head = ""): Menu(title) { this->title = title; this->header = head;}
     void add_item(Menu* item);
     void print_menu();
     void run() override;
-
+    void postFunction();
+    int readChoice();
 };
 
 class MenuItem : public Menu

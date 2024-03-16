@@ -7,15 +7,20 @@ void draw_separator()
 {
     int width, height;
    // get_terminal_size(&width, &height); // fixme
-    for(int i = 0; i < 90; i++)
+    for(int i = 0; i < TERMINAL_WIDTH; i++)
     {
         std::cout << "*";
     }
     std::cout << std::endl;
 }
 
-void draw_header()
+void draw_header(std::string custom_text = "")
 {
+    if(custom_text != "")
+    {
+        std::cout << custom_text << std::endl;
+    }
+    else{
     std::cout << R"(
   ___            _                       _____                                 _     
  / _ \          | |                     /  __ \                               | |    
@@ -26,6 +31,7 @@ void draw_header()
                                                                                      
                                                                                      		
 )" << '\n';
+    }
 }
 
 void SubMenu::add_item(Menu* item)
@@ -42,22 +48,81 @@ void SubMenu::print_menu()
 {
     for(size_t i = 0; i < this->items.size(); i++)
     {
-        std::cout << this->items[i]->getTitle() << std::endl;
+        std::cout << i << " " <<this->items[i]->getTitle() << std::endl;
+    }
+    std::cout << COLOR_RED << "Нажмите q для выхода из меню." << COLOR_BREAK <<std::endl;
+}
+
+int SubMenu::readChoice()
+{
+    std::string choice;
+    std::cout << "Введите номер пункта меню ";
+    std::cin >> choice;
+    if(choice == "q")
+    {
+        system(CLEAR_SCR);
+        return -1;
+    }
+    int chse = std::stoi(choice);
+    return chse;
+    //case special exit info
+}
+
+void SubMenu::executeFunction(int choice)
+{
+    for(int i = 0; i < items.size(); i++)
+    {
+        if(i == choice)
+        {
+            items[i]->run();
+        }
+    }
+}
+
+void SubMenu::postFunction()
+{
+    if(entryCount == maxEntryCount)
+    {
+        system(CLEAR_SCR); // очищаем экран после двух входов в меню
+        entryCount = 0;
+    }
+    else
+    {
+        std::cout << "\n";
+        for (int i = 0; i < TERMINAL_WIDTH; i++)
+        {
+            std::cout << "-";
+        }
+        std::cout << std::endl;
     }
 }
 
 void SubMenu::run()
 {
-    system("clear"); //todo: replace with system.h constants.
-    draw_separator();
-    draw_header();
-    draw_separator();
-    print_menu();
+    system(CLEAR_SCR); // todo: replace with system.h constants.
+    //std::cout << BACKGROUND_BLUE;
+    while (1)
+    {
+        draw_separator();
+        draw_header(header); //todo: custom text
+        draw_separator();
+        print_menu();
+        int choice = readChoice();     
+        if (choice == -1)
+        {
+            break;
+        }
+        executeFunction(choice);
+        entryCount += 1;
+
+        postFunction();
+    }
 }
 
 void MenuItem::run()
 {
     // call action
-    std::cout << "placeholder" << std::endl;
+    system("clear");
+    std::cout << COLOR_RED << "placeholder" << COLOR_BREAK << std::endl;
     return;
 }
