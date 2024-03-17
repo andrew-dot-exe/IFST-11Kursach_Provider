@@ -3,7 +3,7 @@
 
 // todo: set terminal to 90 chars width
 
-void draw_separator()
+static void draw_separator()
 {
     int width, height;
    // get_terminal_size(&width, &height); // fixme
@@ -14,7 +14,7 @@ void draw_separator()
     std::cout << std::endl;
 }
 
-void draw_header(std::string custom_text = "")
+static void draw_header(std::string custom_text = "")
 {
     if(custom_text != "")
     {
