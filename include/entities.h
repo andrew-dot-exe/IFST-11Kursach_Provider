@@ -5,7 +5,7 @@ class Client
 private:
     int personalID;       // ID записи пользователя
     std::string fullName; // фаимилия и имя
-    int documentID; // ID договора на указание услуг
+    int documentID;       // ID договора на указание услуг
 
 public:
     Client(std::string fullname, int personalID, int documentID);
@@ -16,7 +16,7 @@ public:
 class Document
 {
 private:
-    int documentID; // ID документа
+    int documentID;           // ID документа
     std::string documentInfo; //информация о документе
 
 public:
