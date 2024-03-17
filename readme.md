@@ -9,5 +9,5 @@ WIP
 
 ## Использованная литература
 - https://doka.guide/tools/markdown/
-
+- https://habr.com/ru/articles/527044/
 2024, все права защищены
