@@ -1,13 +1,13 @@
 #include "handlers.h"
-#include"system.h"
+#include "system.h"
 
 // todo: set terminal to 90 chars width
 
 static void draw_separator()
 {
     int width, height;
-   // get_terminal_size(&width, &height); // fixme
-    for(int i = 0; i < TERMINAL_WIDTH; i++)
+    // get_terminal_size(&width, &height); // fixme
+    for (int i = 0; i < TERMINAL_WIDTH; i++)
     {
         std::cout << "*";
     }
@@ -16,12 +16,13 @@ static void draw_separator()
 
 static void draw_header(std::string custom_text = "")
 {
-    if(custom_text != "")
+    if (custom_text != "")
     {
         std::cout << custom_text << std::endl;
     }
-    else{
-    std::cout << R"(
+    else
+    {
+        std::cout << R"(
   ___            _                       _____                                 _     
  / _ \          | |                     /  __ \                               | |    
 / /_\ \_ __   __| |_ __ _____      _____| /  \/ ___  _   _ _ __ ___  __ _  ___| |__  
@@ -34,7 +35,7 @@ static void draw_header(std::string custom_text = "")
     }
 }
 
-void SubMenu::add_item(Menu* item)
+void SubMenu::add_item(Menu *item)
 {
     this->items.push_back(item);
 }
@@ -46,11 +47,11 @@ std::string Menu::getTitle()
 
 void SubMenu::print_menu()
 {
-    for(size_t i = 0; i < this->items.size(); i++)
+    for (size_t i = 0; i < this->items.size(); i++)
     {
-        std::cout << i << " " <<this->items[i]->getTitle() << std::endl;
+        std::cout << i << " " << this->items[i]->getTitle() << std::endl;
     }
-    std::cout << COLOR_RED << "Нажмите q для выхода из меню." << COLOR_BREAK <<std::endl;
+    std::cout << COLOR_RED << "Нажмите q для выхода из меню." << COLOR_BREAK << std::endl;
 }
 
 int SubMenu::readChoice()
@@ -58,21 +59,21 @@ int SubMenu::readChoice()
     std::string choice;
     std::cout << "Введите номер пункта меню ";
     std::cin >> choice;
-    if(choice == "q")
+    if (choice == "q")
     {
         system(CLEAR_SCR);
         return -1;
     }
     int chse = std::stoi(choice);
     return chse;
-    //case special exit info
+    // case special exit info
 }
 
 void SubMenu::executeFunction(int choice)
 {
-    for(int i = 0; i < items.size(); i++)
+    for (int i = 0; i < items.size(); i++)
     {
-        if(i == choice)
+        if (i == choice)
         {
             items[i]->run();
         }
@@ -81,7 +82,7 @@ void SubMenu::executeFunction(int choice)
 
 void SubMenu::postFunction()
 {
-    if(entryCount == maxEntryCount)
+    if (entryCount == maxEntryCount)
     {
         system(CLEAR_SCR); // очищаем экран после двух входов в меню
         entryCount = 0;
@@ -100,22 +101,30 @@ void SubMenu::postFunction()
 void SubMenu::run()
 {
     system(CLEAR_SCR); // todo: replace with system.h constants.
-    //std::cout << BACKGROUND_BLUE;
+    // std::cout << BACKGROUND_BLUE;
     while (1)
     {
-        draw_separator();
-        draw_header(header); //todo: custom text
-        draw_separator();
-        print_menu();
-        int choice = readChoice();     
-        if (choice == -1)
+        if (this->isForAdmin && UserHandler::getCurrentUser()->getAdminPrivs())
         {
+            draw_separator();
+            draw_header(header); // todo: custom text
+            draw_separator();
+            print_menu();
+            int choice = readChoice();
+            if (choice == -1)
+            {
+                break;
+            }
+            executeFunction(choice);
+            entryCount += 1;
+
+            postFunction();
+        }
+        else
+        {
+            std::cout << COLOR_RED << "Доступ запрещен." << COLOR_BREAK << std::endl;
             break;
         }
-        executeFunction(choice);
-        entryCount += 1;
-
-        postFunction();
     }
 }
 
@@ -126,3 +135,18 @@ void MenuItem::run()
     std::cout << COLOR_RED << "placeholder" << COLOR_BREAK << std::endl;
     return;
 }
+
+// void MenuContext::run()
+// {
+//     SubMenu *mainMenu;
+//     SubMenu *childMenu;
+
+//     mainMenu = new SubMenu("Main");
+//     childMenu = new SubMenu("Child", "Parent Header");
+
+//     childMenu->add_item(new MenuItem("sample from parent"));
+
+//     mainMenu->add_item(new MenuItem("sample parent"));
+//     mainMenu->add_item(childMenu);
+//     mainMenu->run();
+// }

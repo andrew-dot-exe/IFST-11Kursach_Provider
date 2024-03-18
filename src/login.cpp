@@ -35,7 +35,7 @@ void UserHandler::load(std::vector< User*> users)
     _userList = users;
 }
 
-User* UserHandler::getUser(std::string *login, std::string *password)
+void UserHandler::getUser(std::string *login, std::string *password)
 {
     for(int i = 0; i < _userList.size(); i++)
     {
@@ -44,9 +44,15 @@ User* UserHandler::getUser(std::string *login, std::string *password)
             _userList[i]->authorize(*login, *password);
             if(_userList[i]->getLogged())
             {
-                return _userList[i];
+                _currentUser = _userList[i];
+                break;
             }
         }
     }   
-    return nullptr;
+    return;
+}
+
+User* getCurrentUser()
+{
+    return _currentUser;
 }

@@ -9,12 +9,15 @@
 #include<functional>
 #include<typeinfo> //зачем??
 
+#include "login.h"
+
 class Menu
 {
 protected:
     std::string title;
+    bool isForAdmin = false; // подменю для администраторов 
 public:
-    Menu(std::string title) : title(title){};
+    Menu(std::string title){this->title = title;};
     std::string getTitle();
     virtual ~Menu(){}
     virtual void run() {};
@@ -31,7 +34,7 @@ private:
 
 public:
     virtual ~SubMenu(){};
-    SubMenu(std::string title, std::string head = ""): Menu(title) { this->title = title; this->header = head;}
+    SubMenu(std::string title, std::string head = "", bool admin = false): Menu(title) { this->title = title; this->header = head; this->isForAdmin = admin;}
     void add_item(Menu* item);
     void print_menu();
     void run() override;
@@ -42,9 +45,18 @@ public:
 class MenuItem : public Menu
 {
 public:
-    MenuItem(std::string title): Menu(title) { this->title = title;}
+    MenuItem(std::string title, bool admin = false): Menu(title) { this->title = title; this->isForAdmin = admin;}
 	void run() override;
     virtual ~MenuItem(){}
 private:
 	std::function<void()> action; // нужны флаги компиляции -std=c++11 -stdlib=libc++
 };
+
+// class MenuContext
+// {
+// private:
+//     Menu* _mainMenu;
+// public:
+//     static void run();
+//     static void setupMenu();
+// };

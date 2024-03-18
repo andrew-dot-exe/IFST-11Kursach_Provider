@@ -33,10 +33,12 @@ public:
 class UserHandler
 {
     // Этот класс реализует поиск пользователя из списка пользователей
-    // и возвращает (указатель?) пользователя.   
+    // и возвращает указатель пользователя.   
 private:
     inline static std::vector<User*> _userList{};
+    inline static User* _currentUser;
 public:
     static void load(std::vector<User*> users);
-    static User* getUser(std::string *login, std::string *password);
+    static void getUser(std::string *login, std::string *password);
+    static User* getCurrentUser();
 };
